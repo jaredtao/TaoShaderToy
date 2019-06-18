@@ -41,7 +41,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     Row {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        spacing: 4
+        spacing: 10
         ImageBtn {
             width: 32
             height: 32

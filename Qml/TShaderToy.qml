@@ -93,7 +93,7 @@ ShaderEffect {
         #   define highp
         #endif // GL_ES
 
-        in vec2 qt_TexCoord0;
+        varying vec2 qt_TexCoord0;
         uniform lowp   float qt_Opacity;
 
         uniform vec3   iResolution;
