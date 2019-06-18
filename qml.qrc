@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/Q"/>
+    <qresource prefix="/">
+        <file>Img/pause.png</file>
+        <file>Img/reset.png</file>
+        <file>Img/resume.png</file>
+        <file>Qml/FPSItem.qml</file>
+        <file>Qml/ImageBtn.qml</file>
+        <file>Qml/main.qml</file>
+        <file>Qml/TShaderToy.qml</file>
+    </qresource>
+</RCC>
