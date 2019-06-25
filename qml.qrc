@@ -4,9 +4,14 @@
         <file>Img/pause.png</file>
         <file>Img/reset.png</file>
         <file>Img/resume.png</file>
-        <file>Qml/FPSItem.qml</file>
-        <file>Qml/ImageBtn.qml</file>
         <file>Qml/main.qml</file>
-        <file>Qml/TShaderToy.qml</file>
+        <file>Qml/Shader/Shader_4ddfWX.qml</file>
+        <file>Qml/Shader/4ddfwx.png</file>
+        <file>Qml/Shader/Shader_3I23Rh.qml</file>
+        <file>Qml/Comp/FPSItem.qml</file>
+        <file>Qml/Comp/ImageBtn.qml</file>
+        <file>Qml/Comp/TShaderToy.qml</file>
+        <file>Qml/Shader/Shader_Id3Gz2.qml</file>
+        <file>Qml/Shader/Shader_XtlSD7.qml</file>
     </qresource>
 </RCC>

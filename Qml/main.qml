@@ -1,43 +1,40 @@
 ﻿import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+import "./Comp"
 Window {
     visible: true
     width:  600
     height: 800
     title: qsTr("HelloShader")
+
+    Loader {
+        id: toyLoader
+        width: parent.width
+        height: parent.height - 40
+        onLoaded: {
+            toy.pixelShader = item.pixelShader
+            if (item.iChannel0) {
+                toy.iChannel0 = item.iChannel0
+            }
+            if (item.iChannel1) {
+                toy.iChannel1 = item.iChannel1
+            }
+            if (item.iChannel2) {
+                toy.iChannel2 = item.iChannel2
+            }
+            if (item.iChannel3) {
+                toy.iChannel3 = item.iChannel3
+            }
+            toy.running = true
+            toy.restart()
+        }
+    }
     TShaderToy {
         id: toy
         width: parent.width
         height: parent.height - 40
-        pixelShader: "
-// Smooth HSV to RGB conversion
-// reference: https://www.shadertoy.com/view/MsS3Wc
-vec3 hsv2rgb_smooth( in vec3 c )
-{
-    vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
-
-    rgb = rgb*rgb*(3.0-2.0*rgb); // cubic smoothing
-
-    return c.z * mix( vec3(1.0), rgb, c.y);
-}
-// FabriceNeyret2 optimize
-vec3 hsv2rgb_smooth2( in vec3 c )
-{
-    return c.z * (1. - c.y * smoothstep(2.,1., abs( mod( c.x*6.+vec3(0,4,2), 6.) -3.) ));
-}
-// compare
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord.xy / iResolution.xy;
-
-    vec3 hsl = vec3( uv.x, 1.0, uv.y );
-
-    vec3 rgb = hsv2rgb_smooth( hsl );
-
-    fragColor = vec4( rgb, 1.0 );
-}
-"
+        running: false
     }
     FPSItem {
         id: fpsItem
@@ -47,6 +44,18 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         spacing: 10
+        ComboBox {
+            model: ListModel{
+                ListElement { name: "4ddfwx"; path: "qrc:/Qml/Shader/Shader_4ddfWX.qml"}
+                ListElement { name: "3I23Rh"; path: "qrc:/Qml/Shader/Shader_3I23Rh.qml"}
+                ListElement { name: "Id3Gz2"; path: "qrc:/Qml/Shader/Shader_Id3Gz2.qml"}
+                ListElement { name: "XtlSD7"; path: "qrc:/Qml/Shader/Shader_XtlSD7.qml"}
+            }
+            textRole: "name"
+            onCurrentTextChanged: {
+                toyLoader.source = model.get(currentIndex).path
+            }
+        }
         ImageBtn {
             width: 32
             height: 32
