@@ -84,7 +84,7 @@ ShaderEffect {
         }
     }
     property string versionString: GraphicsInfo.renderableType === GraphicsInfo.SurfaceFormatOpenGLES ?
-                                       "#version 100 es" : "#version 120"
+                                       "#version 100 " : "#version 120"
     vertexShader: "
               uniform mat4 qt_Matrix;
               attribute vec4 qt_Vertex;

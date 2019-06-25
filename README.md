@@ -6,7 +6,8 @@
 
 移植ShaderToy部分特效到Qml，使用ShaderEffect实现。支持安卓。
 
-![](Preview.gif)
+![](Preview1.gif)
+![](Preview2.gif)
 ## 联系方式
 
 ***
