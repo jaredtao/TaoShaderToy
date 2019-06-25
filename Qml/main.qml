@@ -12,6 +12,7 @@ Window {
         height: parent.height - 40
         pixelShader: "
 // Smooth HSV to RGB conversion
+// reference: https://www.shadertoy.com/view/MsS3Wc
 vec3 hsv2rgb_smooth( in vec3 c )
 {
     vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
@@ -20,7 +21,11 @@ vec3 hsv2rgb_smooth( in vec3 c )
 
     return c.z * mix( vec3(1.0), rgb, c.y);
 }
-
+// FabriceNeyret2 optimize
+vec3 hsv2rgb_smooth2( in vec3 c )
+{
+    return c.z * (1. - c.y * smoothstep(2.,1., abs( mod( c.x*6.+vec3(0,4,2), 6.) -3.) ));
+}
 // compare
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {

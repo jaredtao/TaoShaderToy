@@ -46,23 +46,21 @@ ShaderEffect {
     //properties for Qml controller
     property alias hoverEnabled: mouse.hoverEnabled
     property bool running: true
-
     function restart() {
-        timeAnimation.restart()
-    }
-    NumberAnimation {
-        id: timeAnimation
-        target: shader
-        property: "iTime"
-        from: 0
-        to: Math.PI * 2
-        duration: 6914
-        running: shader.running
-        loops: Animation.Infinite;
+        timer1.restart()
     }
     Timer {
-        id: timer
-        running: true
+        id: timer1
+        running: shader.running
+        triggeredOnStart: true
+        interval: 16
+        repeat: true
+        onTriggered: {
+            shader.iTime += 0.016;
+        }
+    }
+    Timer {
+        running: shader.running
         interval: 1000
         onTriggered: {
             var date = new Date();
@@ -84,7 +82,20 @@ ShaderEffect {
             shader.iMouse.w = mouseY
         }
     }
-    readonly property string forwardString: "
+    property string versionString: GraphicsInfo.renderableType === GraphicsInfo.SurfaceFormatOpenGLES ?
+                                       "#version 100 es" : "#version 130"
+    vertexShader: "
+              uniform mat4 qt_Matrix;
+              attribute vec4 qt_Vertex;
+              attribute vec2 qt_MultiTexCoord0;
+              varying vec2 qt_TexCoord0;
+              varying vec4 vertex;
+              void main() {
+                  vertex = qt_Vertex;
+                  gl_Position = qt_Matrix * vertex;
+                  qt_TexCoord0 = qt_MultiTexCoord0;
+              }"
+    readonly property string forwardString: versionString + "
         #ifdef GL_ES
             precision mediump float;
         #else
@@ -94,6 +105,7 @@ ShaderEffect {
         #endif // GL_ES
 
         varying vec2 qt_TexCoord0;
+        varying vec4 vertex;
         uniform lowp   float qt_Opacity;
 
         uniform vec3   iResolution;
@@ -114,7 +126,7 @@ ShaderEffect {
     readonly property string startCode: "
         void main(void)
         {
-            mainImage(gl_FragColor, gl_FragCoord.xy);
+            mainImage(gl_FragColor, vec2(vertex.x, iResolution.y - vertex.y));
         }"
     readonly property string defaultPixelShader: "
         void mainImage(out vec4 fragColor, in vec2 fragCoord)
