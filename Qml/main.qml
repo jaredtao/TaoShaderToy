@@ -26,7 +26,6 @@ Window {
             if (item.iChannel3) {
                 toy.iChannel3 = item.iChannel3
             }
-            toy.running = true
             toy.restart()
         }
     }
@@ -46,8 +45,8 @@ Window {
         spacing: 10
         ComboBox {
             model: ListModel{
-                ListElement { name: "4ddfwx"; path: "qrc:/Qml/Shader/Shader_4ddfWX.qml"}
                 ListElement { name: "3I23Rh"; path: "qrc:/Qml/Shader/Shader_3I23Rh.qml"}
+                ListElement { name: "4ddfwx"; path: "qrc:/Qml/Shader/Shader_4ddfWX.qml"}
                 ListElement { name: "Id3Gz2"; path: "qrc:/Qml/Shader/Shader_Id3Gz2.qml"}
                 ListElement { name: "XtlSD7"; path: "qrc:/Qml/Shader/Shader_XtlSD7.qml"}
             }

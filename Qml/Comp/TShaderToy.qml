@@ -48,6 +48,7 @@ ShaderEffect {
     property bool running: true
     function restart() {
         shader.iTime = 0
+        running = true
         timer1.restart()
     }
     Timer {
@@ -83,8 +84,41 @@ ShaderEffect {
             shader.iMouse.w = mouseY
         }
     }
-    property string versionString: GraphicsInfo.renderableType === GraphicsInfo.SurfaceFormatOpenGLES ?
-                                       "#version 100 " : "#version 120"
+    readonly property string gles2Ver: "
+#define texture texture2D
+precision mediump float;
+"
+    readonly property string gles3Ver: "#version 300 es
+#define varying in
+#define gl_FragColor fragColor
+precision mediump float;
+
+out vec4 fragColor;
+"
+
+    readonly property string gl3Ver: "#version 150
+#define varying in
+#define gl_FragColor fragColor
+#   define lowp
+#   define mediump
+#   define highp
+
+out vec4 fragColor;
+"
+    property string versionString: {
+        if (Qt.platform.os === "android") {
+            if (GraphicsInfo.majorVersion === 3) {
+                console.log("android gles 3")
+                return gles3Ver
+            } else {
+                console.log("android gles 2")
+                return gles2Ver
+            }
+        } else {
+            return gl3Ver
+        }
+    }
+
     vertexShader: "
               uniform mat4 qt_Matrix;
               attribute vec4 qt_Vertex;
@@ -97,14 +131,6 @@ ShaderEffect {
                   qt_TexCoord0 = qt_MultiTexCoord0;
               }"
     readonly property string forwardString: versionString + "
-        #ifdef GL_ES
-            precision mediump float;
-        #else
-        #   define lowp
-        #   define mediump
-        #   define highp
-        #endif // GL_ES
-
         varying vec2 qt_TexCoord0;
         varying vec4 vertex;
         uniform lowp   float qt_Opacity;
