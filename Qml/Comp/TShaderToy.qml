@@ -99,11 +99,14 @@ out vec4 fragColor;
     readonly property string gl3Ver: "#version 150
 #define varying in
 #define gl_FragColor fragColor
-#   define lowp
-#   define mediump
-#   define highp
+#define lowp
+#define mediump
+#define highp
 
 out vec4 fragColor;
+"
+    readonly property string gl2Ver: "#version 110
+#define texture texture2D
 "
     property string versionString: {
         if (Qt.platform.os === "android") {
@@ -115,7 +118,11 @@ out vec4 fragColor;
                 return gles2Ver
             }
         } else {
-            return gl3Ver
+            if (GraphicsInfo.majorVersion === 3 ||GraphicsInfo.majorVersion === 4) {
+                return gl3Ver
+            } else {
+                return gl2Ver
+            }
         }
     }
 
